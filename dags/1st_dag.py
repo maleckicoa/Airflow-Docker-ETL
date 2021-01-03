@@ -18,9 +18,8 @@ with DAG('1st_dag', description='1stDAG', schedule_interval='*/10 * * * *', star
 
 
         backup = BashOperator(
-        postgres_conn_id='postgres_source',
         task_id="back_up",
-        bash_command= "PGPASSWORD='postgres' pg_dump -h 172.17.0.1 -p 5432 --schema=public -U postgres -d analytics > '/usr/local/airflow/tmpdata/backup10.sql'",
+        bash_command= "pg_dump -h 172.17.0.1 -p 5432 --schema=public -U postgres -d analytics > '/usr/local/airflow/tmpdata/backup10.sql'",
         dag=dag)
 
         clean_public_schema = PostgresOperator(
