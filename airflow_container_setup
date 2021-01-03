@@ -1,0 +1,17 @@
+1. open the airflow container
+
+sudo docker exec -u 0 -it af bash  (as root)
+or
+sudo docker exec -it af bash       (normal)
+
+
+2. make temp directory             (from root)
+
+mkdir /usr/local/airflow/tmpdata/
+
+
+3. Make a .pgpass file in the home directory
+
+host:port:db_name:user_name:password
+then run
+chmod 600 .pgpass
