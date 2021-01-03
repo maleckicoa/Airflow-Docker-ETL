@@ -12,8 +12,17 @@ from airflow.operators.docker_operator import DockerOperator
 from time import sleep
 from datetime import datetime
 
+default_args = {
+    'owner': 'airflow',
+    'start_date': datetime(2018, 11, 1),
+    'email_on_failure': True,
+    'email_on_retry': False,
+    'email': ['mihajlovic.aleksa@gmail.com']
+}
 
-with DAG('1st_dag', description='1stDAG', schedule_interval='*/10 * * * *', start_date=datetime(2018, 11, 1), catchup=False) as dag:
+
+
+with DAG('1st_dag', description='1stDAG', schedule_interval='*/10 * * * *',catchup=False, default_args=default_args) as dag:
 
 
 
@@ -56,10 +65,21 @@ with DAG('1st_dag', description='1stDAG', schedule_interval='*/10 * * * *', star
         autocommit = True,
         dag=dag)
 
+        staging = PostgresOperator(
+        postgres_conn_id='postgres_local',
+        task_id='staging',
+        sql='scripts/staging.sql',
+        autocommit = True
+        )
+
         remove_temp_data = BashOperator(
         task_id="remove_temp_data",
-        bash_command="rm /usr/local/airflow/tmpdata/backup10.sql",
+        bash_command="rm /usr/local/airflow/tmpdata/backup10.sq",
         dag=dag)
+
+        transportcomplete = DummyOperator(task_id="transport_complete",
+        dag = dag,
+        trigger_rule = 'all_success')
 
 
         backup >> clean_public_schema
@@ -67,5 +87,6 @@ with DAG('1st_dag', description='1stDAG', schedule_interval='*/10 * * * *', star
         clean_prod_schema >> create_public_schema
         create_public_schema  >> restore
         restore >> rename_public_schema
-        rename_public_schema >> remove_temp_data
-        remove_temp_data
+        rename_public_schema >> staging
+        staging >> remove_temp_data
+        remove_temp_data >> transportcomplete
