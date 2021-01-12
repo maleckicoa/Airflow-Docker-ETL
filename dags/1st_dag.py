@@ -74,7 +74,7 @@ with DAG('1st_dag', description='1stDAG', schedule_interval='*/10 * * * *',catch
 
         remove_temp_data = BashOperator(
         task_id="remove_temp_data",
-        bash_command="rm /usr/local/airflow/tmpdata/backup10.sq",
+        bash_command="rm /usr/local/airflow/tmpdata/backup10.sql",
         dag=dag)
 
         transportcomplete = DummyOperator(task_id="transport_complete",

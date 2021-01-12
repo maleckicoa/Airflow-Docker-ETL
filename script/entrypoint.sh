@@ -133,3 +133,24 @@ case "$1" in
     exec "$@"
     ;;
 esac
+
+
+## EXPERIMENT
+AIRFLOW_ALEKSA:="/usr/local/airflow"
+
+AIRFLOW__SMTP__SMTP_STARTTLS = True
+AIRFLOW__SMTP__SMTP_SSL = False
+AIRFLOW__SMTP__SMTP_HOST=localhost
+AIRFLOW__SMTP__SMTP_PORT=587
+AIRFLOW__SMTP__SMTP_USER=mihajlovic.aleksa@gmail.com
+AIRFLOW__SMTP__SMTP_PASSWORD=jcbvhscazovfxfzn
+AIRFLOW__SMTP__SMTP_MAIL_FROM=mihajlovic.aleksa@gmail.com
+
+
+export AIRFLOW__SMTP__SMTP_STARTTLS
+export AIRFLOW__SMTP__SMTP_SSL
+export AIRFLOW__SMTP__SMTP_HOST
+export AIRFLOW__SMTP__SMTP_PORT
+export AIRFLOW__SMTP__SMTP_USER
+export AIRFLOW__SMTP__SMTP_PASSWORD
+export AIRFLOW__SMTP__SMTP_MAIL_FROM
