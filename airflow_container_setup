@@ -7,11 +7,28 @@ sudo docker exec -it af bash       (normal)
 
 2. make temp directory             (from root)
 
-mkdir /usr/local/airflow/tmpdata/
+cd / && mkdir /usr/local/airflow/tmpdata/
 
 
 3. Make a .pgpass file in the home directory
 
-host:port:db_name:user_name:password
+cd && touch .pgpass && nano .pgpass
+
+172.17.0.1:5432:analytics:postgres:postgres
+
+(host:port:db_name:user_name:password)
+
 then run
+
 chmod 600 .pgpass
+
+4. set up connections
+
+conn id: postgres_local
+conn type: postgres
+host: 172.17.0.1
+schema: postgres
+login: postgres
+password: postgres
+port: 5432
+
