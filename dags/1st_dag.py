@@ -77,9 +77,23 @@ with DAG('1st_dag', description='1stDAG', schedule_interval='*/10 * * * *',catch
         bash_command="rm /usr/local/airflow/tmpdata/backup10.sql",
         dag=dag)
 
-        transportcomplete = DummyOperator(task_id="transport_complete",
+        transportcomplete = DummyOperator(
+        task_id="transport_complete",
         dag = dag,
         trigger_rule = 'all_success')
+
+        reporting_metrics = BashOperator(
+        task_id="reporting_metrics",
+        #bash_command="rm /usr/local/airflow/tmpdata/backup10.sql",
+        bash_command="python3 /usr/local/airflow/dags/scripts/reporting_script.py",
+        dag=dag)
+
+
+#---Reporting Tasks
+    	#reporting_metrics = BashOperator(
+        #task_id="reporting_metrics",
+        #bash_command="python3 scripts/reporting_script.py",
+        #dag=dag)
 
 
         backup >> clean_public_schema
@@ -90,3 +104,4 @@ with DAG('1st_dag', description='1stDAG', schedule_interval='*/10 * * * *',catch
         rename_public_schema >> staging
         staging >> remove_temp_data
         remove_temp_data >> transportcomplete
+        transportcomplete >> reporting_metrics

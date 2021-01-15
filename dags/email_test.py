@@ -1,33 +1,25 @@
+from datetime import datetime
 from airflow import DAG
-from airflow.operators.email_operator import EmailOperator
+from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.python_operator import PythonOperator
-from datetime import datetime, timedelta
 
-default_args = {
-    "owner": "airflow",
-    "depends_on_past": False,
-    "start_date": datetime(2019, 11, 1)
-}
+def print_hello():
+    raise ValueError("Arrays must have the same size")
 
-dag = DAG("email_test", default_args=default_args, schedule_interval=timedelta(days=1))
+dag = DAG('email_test', description='Simple tutorial DAG',
+          schedule_interval='5 * * * *',
+          start_date=datetime(2017, 3, 20))
 
+dummy_operator = DummyOperator(task_id='dummy_task',
+                              retries=3,
+                              email='mihajlovic.aleksa@gmail.com',
+                              email_on_retry=True,
+                              dag=dag)
 
-t1 = EmailOperator(
-    task_id="send_mail",
-    to='mihajlovic.aleksa@gmail.com',
-    subject='Test mail',
-    html_content='<p> You have got mail! <p>',
-    dag=dag)
+hello_operator = PythonOperator(task_id='hello_task',
+                                email='mihajlovic.aleksa@gmail.com',
+                                email_on_failure=True,
+                                python_callable=print_hello,
+                                dag=dag)
 
-
-def error_function():
-    raise Exception('Something wrong')
-
-
-t2 = PythonOperator(
-    task_id='failing_task',
-    python_callable=error_function,
-    email_on_failure=True,
-    email='mihajlovic.aleksa@gmail.com',
-    dag=dag,
-)
+dummy_operator >> hello_operator
