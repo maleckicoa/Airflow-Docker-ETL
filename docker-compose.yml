@@ -27,10 +27,11 @@ services:
       - LOAD_EX=n
       - EXECUTOR=Local
       - FERNET_KEY=jsDPRErfv8Z_eVTnGfF8ywd19j4pyqE3NpdUBA_oRTo=
-      - ALEKSA=FFF
+      - ALEKSA=BBB
     volumes:
       - ./dags:/usr/local/airflow/dags
       - ./script:/usr/local/airflow/entrypoint
+      - ./requirements:/usr/local/airflow/requirements
       # Uncomment to include custom plugins
       # - ./plugins:/usr/local/airflow/plugins
     ports:

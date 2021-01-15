@@ -10,6 +10,7 @@ LABEL maintainer="Puckel_"
 # Never prompt the user for choices on installation/configuration of packages
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM linux
+ENV THAY thay
 
 # Airflow
 ARG AIRFLOW_VERSION=1.10.9
