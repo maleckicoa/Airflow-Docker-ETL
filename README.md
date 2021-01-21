@@ -1,3 +1,24 @@
+
+This is a playground for running Airflow in Docker.
+
+Goal is to simulate typical ETL processes in production.
+
+
+I made multiple changes/commit/merges to better understand the:
+
+- installation process
+- dependencies
+- different operators
+- volumes, entrypoint and configuration file
+- intergation with a database
+- ...
+
+
+The original repo used as a base is  https://github.com/puckel/docker-airflow 
+The original Readme file is below
+
+######################################################################################################
+
 # docker-airflow
 [![CI status](https://github.com/puckel/docker-airflow/workflows/CI/badge.svg?branch=master)](https://github.com/puckel/docker-airflow/actions?query=workflow%3ACI+branch%3Amaster+event%3Apush)
 [![Docker Build status](https://img.shields.io/docker/build/puckel/docker-airflow?style=plastic)](https://hub.docker.com/r/puckel/docker-airflow/tags?ordering=last_updated)
