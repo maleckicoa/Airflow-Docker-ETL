@@ -88,12 +88,19 @@ with DAG('1st_dag', description='1stDAG', schedule_interval='*/10 * * * *',catch
         bash_command="python3 /usr/local/airflow/dags/scripts/reporting_script.py",
         dag=dag)
 
+        parallel_task_1 = DummyOperator(
+        task_id="parallel_task_1",
+        dag = dag)
 
-#---Reporting Tasks
-    	#reporting_metrics = BashOperator(
-        #task_id="reporting_metrics",
-        #bash_command="python3 scripts/reporting_script.py",
-        #dag=dag)
+        parallel_task_2 = DummyOperator(
+        task_id="parallel_task_2",
+        dag = dag)
+
+        merge_task = DummyOperator(
+        task_id="merge_task",
+        dag = dag)
+
+
 
 
         backup >> clean_public_schema
@@ -105,3 +112,9 @@ with DAG('1st_dag', description='1stDAG', schedule_interval='*/10 * * * *',catch
         staging >> remove_temp_data
         remove_temp_data >> transportcomplete
         transportcomplete >> reporting_metrics
+        reporting_metrics >> parallel_task_1
+        reporting_metrics >> parallel_task_2
+        merge_task << parallel_task_1
+        merge_task << parallel_task_2
+        #parallel_task_1 >> merge_task
+        #parallel_task_2 >> merge_task
