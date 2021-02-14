@@ -26,7 +26,7 @@ services:
     environment:
       - LOAD_EX=n
       - EXECUTOR=Local
-      - FERNET_KEY=jsDPRErfv8Z_eVTnGfF8ywd19j4pyqE3NpdUBA_oRTo=
+      - FERNET_KEY=<your fernet key here>
       - ALEKSA=BBB
     volumes:
       - ./dags:/usr/local/airflow/dags
